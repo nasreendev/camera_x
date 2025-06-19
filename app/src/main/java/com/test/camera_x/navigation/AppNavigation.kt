@@ -1,10 +1,8 @@
 package com.test.camera_x.navigation
 
-import android.app.Activity
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -25,7 +23,7 @@ fun AppNavigation() {
                 PhotosListScreen()
             }
             composable(Screen.CAMERA_X_SCREEN.route) {
-                CameraScreen(activity = LocalContext.current as Activity)
+                CameraScreen()
             }
         }
     }

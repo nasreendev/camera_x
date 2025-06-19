@@ -2,7 +2,6 @@ package com.test.camera_x.presentation.camera
 
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import androidx.camera.core.CameraSelector
@@ -37,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -51,13 +51,13 @@ import org.koin.androidx.compose.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CameraScreen(
-    cameraXViewModel: CameraViewModel = koinViewModel(),
-    activity: Activity,
+    viewModel: CameraViewModel = koinViewModel(),
 ) {
+    val context = LocalContext.current
     val navController = localNavHostController.current
     val controller = remember {
         LifecycleCameraController(
-            activity.applicationContext
+            context.applicationContext
         ).apply {
             setEnabledUseCases(
                 CameraController.IMAGE_CAPTURE or
@@ -122,7 +122,7 @@ fun CameraScreen(
                                     "content://media/internal/images/media"
                                 )
                             ).also {
-                                activity.startActivity(it)
+                                context.startActivity(it)
                             }
                         },
                     contentAlignment = Alignment.Center
@@ -144,10 +144,7 @@ fun CameraScreen(
                         .size(60.dp)
                         .background(MaterialTheme.colorScheme.primary)
                         .clickable {
-                            if ((activity as MainActivity).arePermissionsGranted()) {
-                                cameraXViewModel.onTakePhoto(controller)
-                            }
-
+                            viewModel.onTakePhoto(controller)
                         },
                     contentAlignment = Alignment.Center
                 ) {
